@@ -33,6 +33,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return CounterWidget(widget: widget, counterBloc: _counterBloc);
+  }
+
+  @override
+  void dispose() {
+    _counterBloc.close();
+    super.dispose();
+  }
+}
+
+class CounterWidget extends StatelessWidget {
+  const CounterWidget({
+    Key key,
+    @required this.widget,
+    @required CounterBloc counterBloc,
+  })  : _counterBloc = counterBloc,
+        super(key: key);
+
+  final MyHomePage widget;
+  final CounterBloc _counterBloc;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -75,11 +98,5 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _counterBloc.close();
-    super.dispose();
   }
 }
