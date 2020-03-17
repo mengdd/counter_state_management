@@ -33,7 +33,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return CounterWidget(widget: widget, counterBloc: _counterBloc);
+    return BlocProvider(
+        create: (BuildContext context) => CounterBloc(),
+        child: CounterWidget(
+          widget: widget,
+        ));
   }
 
   @override
@@ -47,12 +51,9 @@ class CounterWidget extends StatelessWidget {
   const CounterWidget({
     Key key,
     @required this.widget,
-    @required CounterBloc counterBloc,
-  })  : _counterBloc = counterBloc,
-        super(key: key);
+  }) : super(key: key);
 
   final MyHomePage widget;
-  final CounterBloc _counterBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class CounterWidget extends StatelessWidget {
         title: Text(widget.title),
       ),
       body: BlocBuilder(
-        bloc: _counterBloc,
+        bloc: BlocProvider.of<CounterBloc>(context),
         builder: (context, CounterState state) {
           return Center(
             child: Column(
@@ -83,7 +84,8 @@ class CounterWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           FloatingActionButton(
-            onPressed: () => _counterBloc.add(IncrementEvent()),
+            onPressed: () =>
+                BlocProvider.of<CounterBloc>(context).add(IncrementEvent()),
             tooltip: 'Increment',
             child: Icon(Icons.add),
           ),
@@ -91,7 +93,8 @@ class CounterWidget extends StatelessWidget {
             height: 16,
           ),
           FloatingActionButton(
-            onPressed: () => _counterBloc.add(DecrementEvent()),
+            onPressed: () =>
+                BlocProvider.of<CounterBloc>(context).add(DecrementEvent()),
             tooltip: 'Decrement',
             child: Icon(Icons.remove),
           ),
