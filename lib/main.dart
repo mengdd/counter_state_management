@@ -1,8 +1,12 @@
+import 'package:counterstatemanagement/counter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final counter = Counter();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -10,40 +14,25 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(
+        title: 'Flutter Demo Home Page',
+        counter: counter,
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key key, this.title, this.counter}) : super(key: key);
 
   final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
+  final Counter counter;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         child: Column(
@@ -52,9 +41,11 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            Observer(
+              builder: (_) => Text(
+                '${counter.value}',
+                style: Theme.of(context).textTheme.display1,
+              ),
             ),
           ],
         ),
@@ -63,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           FloatingActionButton(
-            onPressed: _incrementCounter,
+            onPressed: counter.increment,
             tooltip: 'Increment',
             child: Icon(Icons.add),
           ),
@@ -71,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 16,
           ),
           FloatingActionButton(
-            onPressed: _decrementCounter,
+            onPressed: counter.decrement,
             tooltip: 'Decrement',
             child: Icon(Icons.remove),
           ),
