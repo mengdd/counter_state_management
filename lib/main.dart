@@ -58,6 +58,7 @@ class MyHomePage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           ScopedModelDescendant<CounterModel>(
+            rebuildOnChange: false,
             builder: (context, child, model) {
               return FloatingActionButton(
                 onPressed: model.increment,
@@ -70,6 +71,7 @@ class MyHomePage extends StatelessWidget {
             height: 16,
           ),
           ScopedModelDescendant<CounterModel>(
+            rebuildOnChange: false,
             builder: (context, child, model) {
               return FloatingActionButton(
                 onPressed: model.decrement,
