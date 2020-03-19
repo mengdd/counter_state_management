@@ -1,3 +1,4 @@
+import 'package:counterstatemanagement/counter_model.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -15,35 +16,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
+  final counterModel = CounterModel();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         child: Column(
@@ -52,9 +35,14 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            StreamBuilder(
+              stream: counterModel.stream$,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return Text(
+                  '${snapshot.data}',
+                  style: Theme.of(context).textTheme.display1,
+                );
+              },
             ),
           ],
         ),
@@ -63,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           FloatingActionButton(
-            onPressed: _incrementCounter,
+            onPressed: counterModel.increment,
             tooltip: 'Increment',
             child: Icon(Icons.add),
           ),
@@ -71,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 16,
           ),
           FloatingActionButton(
-            onPressed: _decrementCounter,
+            onPressed: counterModel.decrement,
             tooltip: 'Decrement',
             child: Icon(Icons.remove),
           ),
