@@ -61,24 +61,24 @@ class CounterWidget extends StatelessWidget {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: BlocBuilder(
-        bloc: BlocProvider.of<CounterBloc>(context),
-        builder: (context, CounterState state) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            BlocBuilder(
+              bloc: BlocProvider.of<CounterBloc>(context),
+              builder: (BuildContext context, CounterState state) {
+                return Text(
                   '${state.counter}',
                   style: Theme.of(context).textTheme.display1,
-                ),
-              ],
+                );
+              },
             ),
-          );
-        },
+          ],
+        ),
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
